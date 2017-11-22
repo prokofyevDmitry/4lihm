@@ -25,9 +25,6 @@ class CarPhysics extends React.Component {
     componentDidMount(){
         this.socket = openSocket('http://localhost:8000');
         this.socket.on('info', datas => {
-
-
-
             this.setState((prevState,props)=>({
                 datas : prevState.datas.concat(datas)
             }));

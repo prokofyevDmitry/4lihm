@@ -1,0 +1,112 @@
+import { connect } from 'react-redux'
+import React, { Component,PureComponent } from 'react';
+import GoogleMapReact from 'google-map-react';
+
+const AnyReactComponent = ({ text }) => <div>{text}</div>;
+
+class Polyline extends PureComponent {
+
+  componentWillUpdate() {
+    this.line.setMap(null)
+  }
+  componentWillUnmount() {
+    this.line.setMap(null)
+  }
+  getPaths() {
+    const { origin, destination } = this.props
+
+    return [
+      { lat: Number(origin.lat), lng: Number(origin.lng) },
+      { lat: Number(destination.lat), lng: Number(destination.lng) }
+    ];
+  }
+
+  render() {
+    const Polyline = this.props.maps.Polyline
+
+    const renderedPolyline = this.renderPolyline()
+    const paths = { path: this.getPaths() }
+
+    this.line = new Polyline(Object.assign({}, renderedPolyline, paths))
+
+    this.line.setMap(this.props.map)
+
+    return null
+  }
+  renderPolyline() {
+    return {
+      geodesic: true,
+      strokeColor: this.props.color || '#ffffff',
+      strokeOpacity: 1,
+      strokeWeight: 4
+    }
+  }
+}
+class SimpleMap extends Component {
+  static defaultProps = {
+    center: {lat: 0, lng: 0},
+    zoom: 5,
+    gpsPoints : [{lat:1,lng:1},{lat:2,lng:2}],
+
+  };
+
+
+  constructor(props){
+    super(props);
+    this.state = {};
+  }
+
+
+  render() {
+
+    const Markers = this.props.gpsPoints.map((gpsPoint,index)=> (
+      <AnyReactComponent
+      lat={parseFloat(gpsPoint.lat)}
+      lng={parseFloat(gpsPoint.lng)}
+      text={'Kreyser Avrora' + index}
+    />));
+
+    // constructing polylines for each point
+    const polylines = []
+    if(this.props.gpsPoints.length > 1 )
+      for(let _i = 1; _i < this.props.gpsPoints.length; _i++)
+        polylines.push(<Polyline map={this.state.map} maps={this.state.maps} destination={this.props.gpsPoints[_i]} origin={this.props.gpsPoints[_i-1]}/>);
+
+
+    return (
+      <GoogleMapReact
+        bootstrapURLKeys={{
+    key: "AIzaSyA7-7O7ojeYIOmsfIh_ajX1DND0n8UAomA" ,
+    language: 'fr',
+  }}
+        onGoogleApiLoaded={({map, maps}) => { this.setState({ map: map, maps:maps, mapLoaded: true }) } }
+        yesIWantToUseGoogleMapApiInternals
+        defaultCenter={this.props.center}
+        defaultZoom={this.props.zoom}
+      >
+
+        {Markers}
+
+        {polylines}
+
+      </GoogleMapReact>
+    );
+  }
+}
+
+
+
+const mapStateToProps = state => {
+  return {
+    gpsPoints : state.globalState.gpsPoints
+  }
+}
+
+
+
+
+const MapContainer = connect(
+  mapStateToProps
+)(SimpleMap)
+
+export default MapContainer

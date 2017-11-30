@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 
 import Paper from 'material-ui/Paper';
 
@@ -12,7 +12,6 @@ const style = {
 };
 
 class CarPhysics extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -25,15 +24,14 @@ class CarPhysics extends React.Component {
     componentDidMount(){
         this.socket = openSocket('http://localhost:8000');
         this.socket.on('info', datas => {
-            this.setState((prevState,props)=>({
+            this.setState((prevState)=>({
                 datas : prevState.datas.concat(datas)
             }));
             //
-            console.log(this.state.datas);
-            this.setState((prevState,props)=>({
+            this.setState((prevState)=>({
                 print_data : prevState.datas.map((data)=> <li>{JSON.stringify(data)}</li> )
             }));
-            console.log(datas);
+
         });
     }
 
@@ -54,6 +52,7 @@ class CarPhysics extends React.Component {
                     <ul>{this.state.print_data}</ul>
                 </Paper>
             </div>
+
         );
     }
 }

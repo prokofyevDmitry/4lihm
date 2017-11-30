@@ -1,57 +1,30 @@
 import React from 'react';
-import IconMenu from 'material-ui/IconMenu';
-import IconButton from 'material-ui/IconButton';
-import FontIcon from 'material-ui/FontIcon';
-import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
-import MenuItem from 'material-ui/MenuItem';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import RaisedButton from 'material-ui/RaisedButton';
-import FlatButton from 'material-ui/FlatButton';
-import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+import Button from 'material-ui/Button';
+import './toolbar.css';
+import Toolbar from 'material-ui/Toolbar';
 import {NavLink}   from "react-router-dom";
+import AppBar from 'material-ui/AppBar';
+import Grid from 'material-ui/Grid';
+
+
 
 
 export default class ToolbarExamplesSimple extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: 3,
-        };
-    }
 
     handleChange = (event, index, value) => this.setState({value});
 
     render() {
         return (
+            <AppBar position={'static'}>
             <Toolbar>
-                {/*<ToolbarGroup firstChild={true}>*/}
-                    {/*<DropDownMenu value={this.state.value} onChange={this.handleChange}>*/}
-                        {/*<MenuItem value={1} primaryText="All Broadcasts" />*/}
-                        {/*<MenuItem value={2} primaryText="All Voice" />*/}
-                        {/*<MenuItem value={3} primaryText="All Text" />*/}
-                        {/*<MenuItem value={4} primaryText="Complete Voice" />*/}
-                        {/*<MenuItem value={5} primaryText="Complete Text" />*/}
-                        {/*<MenuItem value={6} primaryText="Active Voice" />*/}
-                        {/*<MenuItem value={7} primaryText="Active Text" />*/}
-                    {/*</DropDownMenu>*/}
-                {/*</ToolbarGroup>*/}
-
-
-                <ToolbarGroup>
-
-
-                    <RaisedButton  containerElement={<NavLink to="/carphysics"></NavLink> } label="Car Physics"  primary={true} disableTouchRipple={false}/>
-                    <ToolbarSeparator />
-                    <RaisedButton href={'/racemap'} label="Race Map" primary={true} disableTouchRipple={false}/>
-                    <ToolbarSeparator />
-                    <RaisedButton containerElement={<NavLink to="/camera"></NavLink> } label="Camera" primary={true} disableTouchRipple={false}/>
-                    <ToolbarSeparator />
-                    <RaisedButton href={'/systemstatus'} label="System Status" primary={true} disableTouchRipple={false}/>
-
-
-                </ToolbarGroup>
+            <Grid container justify="center">
+                <Grid item ><NavLink to="/carphysics" ><Button raised     color="accent" >Car Physics</Button></NavLink> </Grid>
+                <Grid item ><NavLink to="/racemap" ><Button raised     color="accent" >Race Map</Button></NavLink></Grid>
+                <Grid item ><NavLink to="/camera" ><Button raised     color="accent" >Camera</Button></NavLink></Grid>
+                <Grid item ><NavLink to="/systemstatus" ><Button raised     color="accent" >Status Système</Button></NavLink></Grid>
+            </Grid>
             </Toolbar>
+        </AppBar>
         );
     }
 }

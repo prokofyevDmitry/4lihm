@@ -1,8 +1,9 @@
 import {combineReducers} from "redux";
-import globalState from './racemap/reducers/globalstate'
+import {globalState,gpsState} from './racemap/reducers/globalstate'
 
 const ihmReducer = combineReducers({
-    globalState
+    globalState,
+    gpsState
 })
 
 export default ihmReducer;

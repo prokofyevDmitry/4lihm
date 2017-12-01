@@ -4,11 +4,24 @@ import { connect } from 'react-redux'
 import Button from 'material-ui/Button'
 import {BtnLaunchClicked} from '../actions/index';
 
-let BtnLaunch = ({state,dispatch}) => {
-  return (
-    <Button raised onClick={()=>(dispatch(BtnLaunchClicked()))}  > Ajouter un element sur la carte</Button>
-  )
+let BtnLaunch = ({onClick, liveLogging}) => {
+  return <Button raised onClick={onClick}  > {(liveLogging ?  "Arrêter" : "Demarrer") } un element sur la carte</Button>
+
 }
 
-BtnLaunch = connect()(BtnLaunch);
+const mapStateToProps = state => {
+  return {
+    liveLogging : state.globalState.liveLogging
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onClick : () => {dispatch(BtnLaunchClicked())}
+  }
+}
+
+
+BtnLaunch = connect(mapStateToProps, mapDispatchToProps)(BtnLaunch);
+
 export default BtnLaunch;

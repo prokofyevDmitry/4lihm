@@ -1,4 +1,4 @@
-
+import openSocket from 'socket.io-client';
 
 /**
  *  action to add gps point to map, profiler and info
@@ -12,9 +12,11 @@ export const addPoint = gpsPoint => {
 }
 
 export const BtnLaunchClicked = () => {
-  return {
-    type: 'BTN_LAUNCH_CLICKED'
-  }
+    return (dispatch, getState) => {
+        console.log(getState().globalState);
+        // if logging is live we stop it, start it otherwise
+        dispatch((getState().globalState.liveLogging ?  stopLiveLogging(getState) :startLiveLogging(dispatch) ));
+    }
 }
 
 
@@ -25,18 +27,31 @@ export const BtnLaunchClicked = () => {
  *  the launchButton will start to act as "stop button"
  *  the network logger start socket communication with the nodejs server
  */
-export const startLiveLogging = () => {
-  return {
-    type: 'START_LOGGING'
-  }
-}
+export const startLiveLogging = (dispatch) => {
+    // we connect to the socket
+    const socket = openSocket('http://localhost:8000');
+    // socket configuration
+    socket.on('gpsPoint', data => {
+          // the data are the gpsPoints
+          // {lat,lng,time}
+          console.log(data);
+          dispatch(addPoint(data));
+        });
+    return {
+      type: 'START_LOGGING',
+      socket: socket
+    }
+};
 
 /**
  * action that stop the live logging
  */
-export const stopLiveLogging = () => {
+export const stopLiveLogging = getState => {
+  // stopping the socket connection
+  getState().globalState.socket.disconnect();
   return {
-    type: 'STOP_LOGGING'
+    type: 'STOP_LOGGING',
+    socket: null
   }
 }
 

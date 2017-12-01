@@ -1,12 +1,9 @@
 import React from "react";
 import Grid from 'material-ui/Grid';
 import BtnLaunch from '../containers/BtnLaunch';
-import MapContainer from './Map';
+import MapContainer from '../containers/MapContainer';
 
 class Racemap extends React.Component {
-    constructor(props){
-        super(props);
-    }
     render() {
 
         return (
@@ -18,7 +15,7 @@ class Racemap extends React.Component {
                         boutons 1
                     </Grid>
                     <Grid item xs={12} >
-
+                        {/* LAUNCH BUTTON */}
                         <BtnLaunch />
 
                     </Grid>
@@ -33,14 +30,11 @@ class Racemap extends React.Component {
                     </Grid>
                     <Grid item xs={12}>
                       <div style={{height:"400px"}}>
+                        {/* MAP */}
                         <MapContainer/>
                         </div>
                     </Grid>
                 </Grid>
-
-
-
-
             </Grid>
 
         );

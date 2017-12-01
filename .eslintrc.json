@@ -26,9 +26,12 @@
     "react/no-string-refs": 0,
     "react/prop-types": 0,
     "react/jsx-key":0
+
   },
   "plugins": [
     "import",
     "react"
   ]
+
+
 }

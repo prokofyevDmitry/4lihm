@@ -1,4 +1,3 @@
-import { connect } from 'react-redux'
 import React, { Component,PureComponent } from 'react';
 import GoogleMapReact from 'google-map-react';
 
@@ -42,12 +41,18 @@ class Polyline extends PureComponent {
     }
   }
 }
-class SimpleMap extends Component {
+
+
+
+class Map extends Component {
+
+  /**
+   * setting default center, zoom and empty array for gpsPoints
+   */
   static defaultProps = {
     center: {lat: 0, lng: 0},
     zoom: 5,
-    gpsPoints : [{lat:1,lng:1},{lat:2,lng:2}],
-
+    gpsPoints : []
   };
 
 
@@ -58,9 +63,12 @@ class SimpleMap extends Component {
 
 
   render() {
-
+    console.log('in map');
+    console.log(this.props.gpsPoints);
+    console.log(typeof this.props.gpsPoints);
     const Markers = this.props.gpsPoints.map((gpsPoint,index)=> (
       <AnyReactComponent
+      key={index}
       lat={parseFloat(gpsPoint.lat)}
       lng={parseFloat(gpsPoint.lng)}
       text={'Kreyser Avrora' + index}
@@ -68,9 +76,9 @@ class SimpleMap extends Component {
 
     // constructing polylines for each point
     const polylines = []
-    if(this.props.gpsPoints.length > 1 )
+    if(this.props.gpsPoints.length > 1 && this.state.mapLoaded )
       for(let _i = 1; _i < this.props.gpsPoints.length; _i++)
-        polylines.push(<Polyline map={this.state.map} maps={this.state.maps} destination={this.props.gpsPoints[_i]} origin={this.props.gpsPoints[_i-1]}/>);
+        polylines.push(<Polyline key={_i} map={this.state.map} maps={this.state.maps} destination={this.props.gpsPoints[_i]} origin={this.props.gpsPoints[_i-1]}/>);
 
 
     return (
@@ -95,18 +103,4 @@ class SimpleMap extends Component {
 }
 
 
-
-const mapStateToProps = state => {
-  return {
-    gpsPoints : state.globalState.gpsPoints
-  }
-}
-
-
-
-
-const MapContainer = connect(
-  mapStateToProps
-)(SimpleMap)
-
-export default MapContainer
+export default Map;

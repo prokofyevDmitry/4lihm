@@ -1,7 +1,9 @@
-import React, { Component,PureComponent } from 'react';
+import React, { Component, PureComponent } from 'react';
 import GoogleMapReact from 'google-map-react';
 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
+const AnyReactComponent = ({text}) => <div>
+                                        { text }
+                                      </div>;
 
 class Polyline extends PureComponent {
 
@@ -11,12 +13,19 @@ class Polyline extends PureComponent {
   componentWillUnmount() {
     this.line.setMap(null)
   }
+
   getPaths() {
-    const { origin, destination } = this.props
+    const {origin, destination} = this.props
 
     return [
-      { lat: Number(origin.lat), lng: Number(origin.lng) },
-      { lat: Number(destination.lat), lng: Number(destination.lng) }
+      {
+        lat: Number(origin.lat),
+        lng: Number(origin.lng)
+      },
+      {
+        lat: Number(destination.lat),
+        lng: Number(destination.lng)
+      }
     ];
   }
 
@@ -24,7 +33,9 @@ class Polyline extends PureComponent {
     const Polyline = this.props.maps.Polyline
 
     const renderedPolyline = this.renderPolyline()
-    const paths = { path: this.getPaths() }
+    const paths = {
+      path: this.getPaths()
+    }
 
     this.line = new Polyline(Object.assign({}, renderedPolyline, paths))
 
@@ -50,13 +61,16 @@ class Map extends Component {
    * setting default center, zoom and empty array for gpsPoints
    */
   static defaultProps = {
-    center: {lat: 0, lng: 0},
+    center: {
+      lat: 0,
+      lng: 0
+    },
     zoom: 5,
-    gpsPoints : []
+    gpsPoints: []
   };
 
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {};
   }
@@ -66,39 +80,39 @@ class Map extends Component {
     console.log('in map');
     console.log(this.props.gpsPoints);
     console.log(typeof this.props.gpsPoints);
-    const Markers = this.props.gpsPoints.map((gpsPoint,index)=> (
-      <AnyReactComponent
-      key={index}
-      lat={parseFloat(gpsPoint.lat)}
-      lng={parseFloat(gpsPoint.lng)}
-      text={'Kreyser Avrora' + index}
-    />));
+    const Markers = this.props.gpsPoints.map((gpsPoint, index) => (
+      <AnyReactComponent key={ index }
+                         lat={ parseFloat(gpsPoint.lat) }
+                         lng={ parseFloat(gpsPoint.lng) }
+                         text={ 'Kreyser Avrora' + index } />));
 
     // constructing polylines for each point
     const polylines = []
-    if(this.props.gpsPoints.length > 1 && this.state.mapLoaded )
-      for(let _i = 1; _i < this.props.gpsPoints.length; _i++)
-        polylines.push(<Polyline key={_i} map={this.state.map} maps={this.state.maps} destination={this.props.gpsPoints[_i]} origin={this.props.gpsPoints[_i-1]}/>);
+    if (this.props.gpsPoints.length > 1 && this.state.mapLoaded)
+      for (let _i = 1; _i < this.props.gpsPoints.length; _i++)
+        polylines.push(<Polyline key={ _i }
+                                 map={ this.state.map }
+                                 maps={ this.state.maps }
+                                 destination={ this.props.gpsPoints[_i] }
+                                 origin={ this.props.gpsPoints[_i - 1] } />);
 
 
     return (
-      <GoogleMapReact
-        bootstrapURLKeys={{
-    key: "AIzaSyA7-7O7ojeYIOmsfIh_ajX1DND0n8UAomA" ,
-    language: 'fr',
-  }}
-        onGoogleApiLoaded={({map, maps}) => { this.setState({ map: map, maps:maps, mapLoaded: true }) } }
-        yesIWantToUseGoogleMapApiInternals
-        defaultCenter={this.props.center}
-        defaultZoom={this.props.zoom}
-      >
-
-        {Markers}
-
-        {polylines}
-
+      <GoogleMapReact bootstrapURLKeys={ { key: "AIzaSyA7-7O7ojeYIOmsfIh_ajX1DND0n8UAomA", language: 'fr', } }
+                      onGoogleApiLoaded={ ({map, maps}) => {
+                                            this.setState({
+                                              map: map,
+                                              maps: maps,
+                                              mapLoaded: true
+                                            })
+                                          } }
+                      yesIWantToUseGoogleMapApiInternals
+                      defaultCenter={ this.props.center }
+                      defaultZoom={ this.props.zoom }>
+        { Markers }
+        { polylines }
       </GoogleMapReact>
-    );
+      );
   }
 }
 

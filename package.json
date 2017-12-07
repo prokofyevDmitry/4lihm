@@ -24,6 +24,7 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "esformatter-jsx": "^8.0.1",
     "eslint-plugin-react": "^7.5.1",
     "redux-devtools": "^3.4.1"
   }

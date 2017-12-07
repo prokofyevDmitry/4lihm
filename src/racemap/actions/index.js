@@ -7,16 +7,16 @@ import openSocket from 'socket.io-client';
 export const addPoint = gpsPoint => {
   return {
     type: 'ADD_GPS',
-    gpsPoint:gpsPoint
+    gpsPoint: gpsPoint
   }
 }
 
 export const BtnLaunchClicked = () => {
-    return (dispatch, getState) => {
-        console.log(getState().globalState);
-        // if logging is live we stop it, start it otherwise
-        dispatch((getState().globalState.liveLogging ?  stopLiveLogging(getState) :startLiveLogging(dispatch) ));
-    }
+  return (dispatch, getState) => {
+    console.log(getState().globalState);
+    // if logging is live we stop it, start it otherwise
+    dispatch((getState().globalState.liveLogging ? stopLiveLogging(getState) : openStageDialog()));
+  }
 }
 
 
@@ -26,22 +26,46 @@ export const BtnLaunchClicked = () => {
  *  the menuStage is locked
  *  the launchButton will start to act as "stop button"
  *  the network logger start socket communication with the nodejs server
+ *  The stage name popup is closed with a close event dispatch
  */
-export const startLiveLogging = (dispatch) => {
-    // we connect to the socket
-    const socket = openSocket('http://localhost:8000');
-    // socket configuration
-    socket.on('gpsPoint', data => {
-          // the data are the gpsPoints
-          // {lat,lng,time}
-          console.log(data);
-          dispatch(addPoint(data));
-        });
-    return {
-      type: 'START_LOGGING',
-      socket: socket
-    }
+export const startLiveLogging = (dispatch, stageName) => {
+
+  // writing new stage to server
+
+
+
+  // we connect to the socket
+  const socket = openSocket('http://localhost:8000');
+
+
+  // socket configuration
+  socket.on('gpsPoint', data => {
+    // the data are the gpsPoints
+    // {lat,lng,time}
+    console.log(data);
+    dispatch(addPoint(data));
+  });
+
+  return {
+    type: 'START_LOGGING',
+    socket: socket,
+  }
 };
+
+
+
+
+export const openStageDialog = (open) => {
+  return {
+    type: 'OPEN_STAGE_DIALOG'
+  }
+}
+export const closeStageDialog = (open) => {
+  return {
+    type: 'CLOSE_STAGE_DIALOG'
+  }
+}
+
 
 /**
  * action that stop the live logging
@@ -59,18 +83,18 @@ export const stopLiveLogging = getState => {
 /**
  * action that start the preview of older stage.
  */
- export const startHistoricalPriview = stageId => {
-   return {
-     type: 'START_HISTORICAL_PRIVIEW',
-     stageId : stageId
-   }
- }
-
- /**
-  * action that stop the preview of older stage.
-  */
-  export const stopHistoricalPriview = () => {
-    return {
-      type: 'STOP_HISTORICAL_PRIVIEW'
-    }
+export const startHistoricalPriview = stageId => {
+  return {
+    type: 'START_HISTORICAL_PRIVIEW',
+    stageId: stageId
   }
+}
+
+/**
+ * action that stop the preview of older stage.
+ */
+export const stopHistoricalPriview = () => {
+  return {
+    type: 'STOP_HISTORICAL_PRIVIEW'
+  }
+}

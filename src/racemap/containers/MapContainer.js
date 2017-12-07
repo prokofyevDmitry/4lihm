@@ -3,7 +3,7 @@ import Map from '../components/Map';
 
 const mapStateToProps = state => {
   return {
-    gpsPoints : state.globalState.gpsPoints
+    gpsPoints: state.globalState.gpsPoints
   }
 }
 

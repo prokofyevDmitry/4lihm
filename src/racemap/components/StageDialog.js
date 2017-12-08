@@ -14,14 +14,14 @@ export default class StageDialog extends React.Component {
       departure: '',
       arrival: ''
     };
-    this.handleChange = this.handleChange.bind(this);
+    this.handleChangeDeparture = this.handleChangeDeparture.bind(this);
+    this.handleChangeArrival = this.handleChangeArrival.bind(this);
   }
 
 
   static defaultProps() {
     return {
-      open: false,
-      stageName: ""
+      open: false
     }
   }
 
@@ -32,9 +32,16 @@ export default class StageDialog extends React.Component {
    * @param  {type} event description
    * @return {null}       description
    */
-  handleChange(event) {
+  handleChangeDeparture(event) {
     this.setState({
-      stageName: event.target.value
+      departure: event.target.value
+    });
+    return;
+  }
+
+  handleChangeArrival(event) {
+    this.setState({
+      arrival: event.target.value
     });
     return;
   }
@@ -50,24 +57,24 @@ export default class StageDialog extends React.Component {
           <DialogContent>
             <FormControl fullWidth>
               <TextField id="departure"
-                         label="départ"
-                         onChange={ this.handleChange }
+                         label="Départ"
+                         onChange={ this.handleChangeDeparture }
                          value={ this.state.departure }
                          margin="normal" />
             </FormControl>
             <FormControl fullWidth>
               <TextField id="name"
-                         label="Name"
-                         onChange={ this.handleChange }
-                         value={ this.state.stageName }
+                         label="Arrivé"
+                         onChange={ this.handleChangeArrival }
+                         value={ this.state.arrival }
                          margin="normal" />
             </FormControl>
           </DialogContent>
           <DialogActions>
             { /* this button is disabled if the this.props.stageName is an empty string */ }
-            <Button onClick={ () => this.props.handleRequestClose(this.state.stageName) }
+            <Button onClick={ () => this.props.handleRequestClose(this.state.departure, this.state.arrival) }
                     color="primary"
-                    disabled={ this.state.stageName.length == 0 }
+                    disabled={ this.state.departure.length === 0 || this.state.arrival.length === 0 }
                     autoFocus>
               Démarrer
             </Button>

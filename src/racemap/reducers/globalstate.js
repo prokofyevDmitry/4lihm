@@ -43,22 +43,103 @@ export const gpsState = (state = {
 
 
 export const stageDialogReducer = (state = {
-    stageName: "",
     open: false
-  } ,action) => {
+  }, action) => {
   switch (action.type) {
   case 'OPEN_STAGE_DIALOG':
     return ({
-      open: true,
-      stageName: ""
+      open: true
     });
-  case 'CLOSE_STAGE_DIALOG':
+  case 'START_LOGGING':
     return ({
-      open: false,
-      stageName: ""
+      open: false
     });
   default:
     return state;
   }
 
 }
+
+export const stageMenuReducer = (state = {
+    open: false
+  }, action) => {
+  switch (action.type) {
+  case 'OPEN_STAGE_MENU':
+    return ({
+      open: true
+    });
+  case 'REQUEST_STAGES':
+    return ({
+      open: false
+    });
+  default:
+    return state;
+  }
+
+}
+
+
+// STAGE HANDLE 
+export const selectedStage = (state = {
+    selectedStage: 0
+  }, action) => {
+  switch (action.type) {
+  case 'SELECT_STAGE':
+    return action.selectedStage
+  default:
+    return state
+  }
+}
+
+
+
+
+
+export const apiCallsStatus = (state = {
+    isFetching: false
+  }, action) => {
+
+  switch (action.type) {
+  case 'REQUEST_STAGES':
+  case 'CREATE_STAGE':
+    return {
+      isFetching: true
+    }
+
+  case 'RECEIVE_STAGES':
+  case 'CREATED_STAGE':
+  case 'ERROR_CREATE_STAGE':
+
+    return {
+      isFetching: false
+    }
+  default:
+    return state
+  }
+
+}
+
+export const statgesApi = (state = {
+    stages: [],
+    error: ""
+  } , action) => {
+
+  switch (action.type) {
+  case 'RECEIVE_STAGES':
+    return {
+      stages: action.stages,
+      error: ""
+    }
+
+  // error handling
+  case 'ERROR_CREATE_STAGE':
+    return {
+      stages: [],
+      error: action.error
+    }
+
+  default:
+    return state
+  }
+}
+

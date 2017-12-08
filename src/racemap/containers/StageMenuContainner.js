@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
-import StageDialog from '../components/StageDialog'
-import { startLiveLogging } from '../actions/index';
+import StageDialog from '../components/StageMenu'
+import { fetchStages } from '../actions/index'
+
 const mapStateToProps = state => {
   return {
     open: state.stageDialogReducer.open
@@ -9,7 +10,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    handleRequestClose: (stageId) => {
+    handleRequestClose: (departure, arrival) => {
       dispatch(startLiveLogging(dispatch, departure, arrival))
     }
   }
@@ -17,3 +18,4 @@ const mapDispatchToProps = dispatch => {
 
 const StageDialogContainer = connect(mapStateToProps, mapDispatchToProps)(StageDialog);
 export default StageDialogContainer;
+

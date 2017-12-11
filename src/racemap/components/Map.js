@@ -75,6 +75,10 @@ class Map extends Component {
     this.state = {};
   }
 
+  updateMapBounds = (bounds) => {
+    this.props.mapBoundsChanged(bounds);
+    this.props.reloadGpsPoints();
+  }
 
   render() {
     console.log('in map');
@@ -83,8 +87,7 @@ class Map extends Component {
     const Markers = this.props.gpsPoints.map((gpsPoint, index) => (
       <AnyReactComponent key={ index }
                          lat={ parseFloat(gpsPoint.lat) }
-                         lng={ parseFloat(gpsPoint.lng) }
-                         text={ 'Kreyser Avrora' + index } />));
+                         lng={ parseFloat(gpsPoint.lng) } />));
 
     // constructing polylines for each point
     const polylines = []
@@ -106,6 +109,7 @@ class Map extends Component {
                                               mapLoaded: true
                                             })
                                           } }
+                      onChange={ this.updateMapBounds }
                       yesIWantToUseGoogleMapApiInternals
                       defaultCenter={ this.props.center }
                       defaultZoom={ this.props.zoom }>

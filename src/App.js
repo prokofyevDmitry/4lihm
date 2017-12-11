@@ -3,7 +3,8 @@ import ToolbarExamplesSimple from './toolbar/toolbar';
 import CarPhysics from './carphysics/carphysics';
 import Racemap from './racemap/components/Racemap'
 import Camera from './camera/camera';
-import { Route, HashRouter} from "react-router-dom";
+import LoarderContainer from './loader/loader';
+import { Route, HashRouter } from "react-router-dom";
 
 import './App.css';
 
@@ -17,6 +18,7 @@ class App extends Component {
         <div>
           <ToolbarExamplesSimple/>
           <div className="content">
+            <LoarderContainer/>
             <Route path="/carphysics"
                    component={ CarPhysics } />
             <Route path="/camera"

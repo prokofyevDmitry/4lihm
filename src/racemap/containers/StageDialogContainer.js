@@ -9,7 +9,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    handleRequestClose: (stageId) => {
+    handleRequestClose: (departure, arrival) => {
       dispatch(startLiveLogging(dispatch, departure, arrival))
     }
   }

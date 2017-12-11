@@ -3,6 +3,7 @@ import Grid from 'material-ui/Grid';
 import BtnLaunch from '../containers/BtnLaunch';
 import MapContainer from '../containers/MapContainer';
 import StageDialogContainer from '../containers/StageDialogContainer';
+import StageMenuContainer from '../containers/StageMenuContainer';
 
 class Racemap extends React.Component {
   render() {
@@ -34,7 +35,7 @@ class Racemap extends React.Component {
               xs={ 10 }>
           <Grid item
                 xs={ 12 }>
-            selecteur
+            <StageMenuContainer/>
           </Grid>
           <Grid item
                 xs={ 12 }>

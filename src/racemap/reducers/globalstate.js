@@ -6,7 +6,6 @@ export const globalState = (state = {
   console.log(action.type + "occured");
   switch (action.type) {
   case 'START_LOGGING':
-    console.log(action);
     return ({
       liveLogging: !state.liveLogging,
       socket: action.socket,
@@ -21,6 +20,28 @@ export const globalState = (state = {
   }
 }
 
+
+// map state
+
+export const mapState = (state = {
+    ne: {},
+    sw: {}
+  } , action) => {
+
+
+  switch (action.type) {
+
+  case 'MAP_BOUNDS_CHANGES':
+    console.log(action);
+    return {
+      ne: action.ne,
+      sw: action.sw
+    }
+  default:
+    return state
+
+  }
+}
 
 
 
@@ -43,12 +64,14 @@ export const gpsState = (state = {
 
 
 export const stageDialogReducer = (state = {
-    open: false
-  }, action) => {
+    open: false,
+    anchorEl: null
+  } , action) => {
   switch (action.type) {
   case 'OPEN_STAGE_DIALOG':
     return ({
       open: true
+
     });
   case 'START_LOGGING':
     return ({
@@ -61,16 +84,19 @@ export const stageDialogReducer = (state = {
 }
 
 export const stageMenuReducer = (state = {
-    open: false
-  }, action) => {
+    open: false,
+    anchorEl: null
+  } , action) => {
   switch (action.type) {
   case 'OPEN_STAGE_MENU':
     return ({
-      open: true
+      open: true,
+      anchorEl: action.anchorEl
     });
-  case 'REQUEST_STAGES':
+  case 'REQUEST_GPS_POINTS':
     return ({
-      open: false
+      open: false,
+      anchorEl: null
     });
   default:
     return state;
@@ -80,12 +106,13 @@ export const stageMenuReducer = (state = {
 
 
 // STAGE HANDLE 
-export const selectedStage = (state = {
-    selectedStage: 0
-  }, action) => {
+export const selectedStage = (state = -1
+  , action) => {
   switch (action.type) {
   case 'SELECT_STAGE':
-    return action.selectedStage
+    return action.selectedStage;
+  case 'STOP_PREVIEW':
+    return -1;
   default:
     return state
   }
@@ -102,6 +129,7 @@ export const apiCallsStatus = (state = {
   switch (action.type) {
   case 'REQUEST_STAGES':
   case 'CREATE_STAGE':
+  case 'REQUEST_GPS_POINTS':
     return {
       isFetching: true
     }
@@ -109,7 +137,9 @@ export const apiCallsStatus = (state = {
   case 'RECEIVE_STAGES':
   case 'CREATED_STAGE':
   case 'ERROR_CREATE_STAGE':
-
+  case 'ERROR_REQUEST_STAGES':
+  case 'ERROR_REQUEST_GPS_POINTS':
+  case 'RECEIVE_GPS_POINTS':
     return {
       isFetching: false
     }
@@ -133,13 +163,40 @@ export const statgesApi = (state = {
 
   // error handling
   case 'ERROR_CREATE_STAGE':
+  case 'ERROR_REQUEST_STAGES':
+    console.log(action.error);
     return {
       stages: [],
       error: action.error
     }
-
   default:
     return state
   }
 }
 
+export const gpsPointsApi = (state = {
+    gpsPoints: [],
+    gpsPointsPures: [],
+    error: ""
+  } , action) => {
+
+  switch (action.type) {
+  case 'RECEIVE_GPS_POINTS':
+    return {
+      gpsPoints: action.gpsPoints,
+      gpsPointsPures: action.gpsPointsPures,
+      error: ""
+    }
+
+  // error handling
+  case 'ERROR_REQUEST_GPS_POINTS':
+    console.log(action.error);
+    return {
+      gpsPoints: [],
+      gpsPointsPures: [],
+      error: action.error
+    }
+  default:
+    return state
+  }
+}

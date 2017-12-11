@@ -20,6 +20,26 @@ export const BtnLaunchClicked = () => {
 }
 
 
+export const mapBoundsChanged = (bounds) => {
+
+  return {
+    type: 'MAP_BOUNDS_CHANGES',
+    ne: bounds.ne,
+    sw: bounds.sw
+  }
+}
+
+
+export const selectedStage = (stageId) => {
+
+  return {
+    type: 'SELECT_STAGE',
+    selectedStage: stageId
+  }
+
+}
+
+
 /**
  * action that launch the live logging
  * On that action :
@@ -57,9 +77,10 @@ export const startLiveLogging = (dispatch, departure, arrival) => {
 
 //IU ACTIONS
 
-export const openStageDialog = () => {
+export const openStageDialog = event => {
   return {
-    type: 'OPEN_STAGE_DIALOG'
+    type: 'OPEN_STAGE_DIALOG',
+    anchorEl: event.currentTarget
   }
 }
 // TODO: remove if not needed in the end
@@ -108,8 +129,9 @@ export const stopLiveLogging = getState => {
 */
 export const receiveStages = json => {
   return {
+
     type: 'RECEIVE_STAGES',
-    stages: json.data.children.map(child => child.data)
+    stages: json
   }
 }
 
@@ -119,14 +141,95 @@ export const requestStages = () => {
   }
 }
 
+export const errorRequestStages = error => {
+  return {
+    type: 'ERROR_REQUEST_STAGES',
+    error: error
+  }
+}
+
 export const fetchStages = () => {
   return (dispatch) => {
     // Make UI aware of the fact that we are fetching stages
     dispatch(requestStages());
+    return fetch(apiPaths.stages, {
+      mode: 'cors'
+    }).then(
+      response => {
+        if (!response.ok) {
+          dispatch(errorRequestStages(response.statusText));
+          return;
+        }
+        response.json().then(json => dispatch(receiveStages(json)))
+      })
+      .catch(error => {
+        dispatch(errorRequestStages(error))
+      })
+
+  }
+}
 
 
-    return fetch(apiPaths.stages).then(
-      response => response.json()).then(json => dispatch(receiveStages(json)))
+export const receiveGpsPoints = json => {
+
+  // we will create elements lat lng gps poitns
+
+
+  const gpsPointsPures = json.map(gps => ({
+    lat: gps.lattitude,
+    lng: gps.longitude
+  }));
+
+
+  return {
+    type: 'RECEIVE_GPS_POINTS',
+    gpsPoints: json,
+    gpsPointsPures: gpsPointsPures,
+  }
+}
+
+export const requestGpsPoints = () => {
+  return {
+    type: 'REQUEST_GPS_POINTS'
+  }
+}
+
+export const errorRequestGpsPoints = error => {
+  return {
+    type: 'ERROR_REQUEST_GPS_POINTS',
+    error: error
+  }
+}
+
+
+
+
+export const fetchGpsPoints = () => {
+  return (dispatch, getState) => {
+
+    // verification des informations disponibles pour effectuer la request
+    if (getState().selectedStage > -1) {
+      dispatch(requestGpsPoints());
+
+      // data construction : 
+      const bounds = getState().mapState;
+
+      const req = "?stageId=" + getState().selectedStage + "&neLat=" + bounds.ne.lat + "&neLng=" + bounds.ne.lng + "&swLat=" + bounds.sw.lat + "&swLng=" + bounds.sw.lng
+
+      return fetch(apiPaths.gpsPoints + req, {
+        mode: 'cors',
+      }).then(
+        response => {
+          if (!response.ok) {
+            dispatch(errorRequestGpsPoints(response.statusText));
+            return;
+          }
+          response.json().then(json => dispatch(receiveGpsPoints(json)))
+        })
+        .catch(error => {
+          dispatch(errorRequestGpsPoints(error))
+        })
+    }
   }
 }
 
@@ -158,6 +261,7 @@ export const writeSrage = (departure, arrival) => {
 
     return fetch(apiPaths.stages, {
       method: 'POST',
+      mode: 'cors',
       headers: {
         'Content-Type': 'application/json'
       },

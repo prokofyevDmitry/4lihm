@@ -21,7 +21,7 @@ class StageMenu extends React.Component {
         <Button aria-owns={ this.props.open ? 'simple-menu' : null }
                 aria-haspopup="true"
                 onClick={ this.props.handleClick }>
-          Choisir l'étape
+          { (this.props.selectedStage > -1) ? this.props.stages[this.props.selectedStage].depart + " -- " + this.props.stages[this.props.selectedStage].arrivee : "Selectionner une étape" }
         </Button>
         <Menu id="simple-menu"
               anchorEl={ this.props.anchorEl }
@@ -29,7 +29,7 @@ class StageMenu extends React.Component {
               onRequestClose={ this.handleRequestClose }>
           { this.props.stages.map((stage, index) => (
               <MenuItem key={ stage.id }
-                        onClick={ event => this.handleRequestClose(stage.id) }>
+                        onClick={ event => this.handleRequestClose(index) }>
                 { stage.depart } --
                 { stage.arrivee }
               </MenuItem>

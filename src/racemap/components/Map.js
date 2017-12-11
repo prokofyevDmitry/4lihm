@@ -81,9 +81,6 @@ class Map extends Component {
   }
 
   render() {
-    console.log('in map');
-    console.log(this.props.gpsPoints);
-    console.log(typeof this.props.gpsPoints);
     const Markers = this.props.gpsPoints.map((gpsPoint, index) => (
       <AnyReactComponent key={ index }
                          lat={ parseFloat(gpsPoint.lat) }

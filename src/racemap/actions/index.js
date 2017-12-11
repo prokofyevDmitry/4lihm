@@ -214,7 +214,7 @@ export const fetchGpsPoints = () => {
       // data construction : 
       const bounds = getState().mapState;
 
-      const req = "?stageId=" + getState().selectedStage + "&neLat=" + bounds.ne.lat + "&neLng=" + bounds.ne.lng + "&swLat=" + bounds.sw.lat + "&swLng=" + bounds.sw.lng
+      const req = "?stageId=" + getState().statgesApi.stages[getState().selectedStage].id + "&neLat=" + bounds.ne.lat + "&neLng=" + bounds.ne.lng + "&swLat=" + bounds.sw.lat + "&swLng=" + bounds.sw.lng
 
       return fetch(apiPaths.gpsPoints + req, {
         mode: 'cors',

@@ -6,7 +6,8 @@ const mapStateToProps = state => {
   return {
     open: state.stageMenuReducer.open,
     anchorEl: state.stageMenuReducer.anchorEl,
-    stages: state.statgesApi.stages
+    stages: state.statgesApi.stages,
+    selectedStage: state.selectedStage
   }
 }
 

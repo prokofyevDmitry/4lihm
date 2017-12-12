@@ -4,6 +4,8 @@ import BtnLaunch from '../containers/BtnLaunch';
 import MapContainer from '../containers/MapContainer';
 import StageDialogContainer from '../containers/StageDialogContainer';
 import StageMenuContainer from '../containers/StageMenuContainer';
+import AltitudeChartContainer from './AltitudeChartContainer';
+
 
 class Racemap extends React.Component {
   render() {
@@ -42,6 +44,7 @@ class Racemap extends React.Component {
             <div style={ { height: "400px" } }>
               { /* MAP */ }
               <MapContainer/>
+              <AltitudeChartContainer/>
             </div>
           </Grid>
         </Grid>
@@ -50,7 +53,6 @@ class Racemap extends React.Component {
       );
   }
 }
-;
 
 
 export default Racemap;

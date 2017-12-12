@@ -1,4 +1,4 @@
-import { fetchStages, fetchGpsPoints, writeSrage } from '../actions/index';
+
 
 
 export const globalState = (state = {
@@ -230,33 +230,34 @@ export const apiErrors = (state = {
   switch (action.type) {
   // calls cancelling all errors
   case 'RECEIVE_GPS_POINTS':
+  case 'REQUEST_STAGES':
   case 'RECEIVE_STAGES':
+  case 'CREATE_STAGE':
     return ({
       active: false,
       error: "",
-      lastCalledFunction: () => {
-      }
+      lastCalledFunction: ""
     })
 
   case 'ERROR_REQUEST_GPS_POINTS':
     return ({
       active: true,
       error: action.error,
-      lastCalledFunction: fetchGpsPoints
+      lastCalledFunction: 'REQUEST_GPS_POINTS'
     })
 
-  case 'ERROR_CREATE_STAGE':
-    return ({
-      active: true,
-      error: action.error,
-      lastCalledFunction: writeSrage
-    })
+  // case 'ERROR_CREATE_STAGE':
+    //   return ({
+    //     active: true,
+    //     error: action.error,
+    //     lastCalledFunction: 'CREATE_STAGE'
+    //   })
 
   case 'ERROR_REQUEST_STAGES':
     return ({
       active: true,
       error: action.error,
-      lastCalledFunction: fetchStages
+      lastCalledFunction: 'REQUEST_STAGES'
     })
 
 

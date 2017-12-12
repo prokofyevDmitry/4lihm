@@ -1,10 +1,23 @@
 import openSocket from 'socket.io-client';
 import apiPaths from '../../APIPaths'
 
-
 // action that dispatch the given function 
-export const voidDispatcher = (func) => {
-  func;
+export const retryRequest = (func) => {
+  return (dispatch, getState) => {
+
+
+    switch (getState().apiErrors.lastCalledFunction) {
+    case 'REQUEST_GPS_POINTS':
+      dispatch(fetchGpsPoints());
+      break;
+    case 'REQUEST_STAGES':
+      dispatch(fetchStages())
+      break;
+
+    default:
+      return;
+    }
+  }
 }
 
 
@@ -88,8 +101,7 @@ export const startLiveLogging = (dispatch, departure, arrival) => {
 
 export const openStageDialog = event => {
   return {
-    type: 'OPEN_STAGE_DIALOG',
-    anchorEl: event.currentTarget
+    type: 'OPEN_STAGE_DIALOG'
   }
 }
 // TODO: remove if not needed in the end
@@ -188,6 +200,8 @@ export const receiveGpsPoints = json => {
     lat: gps.lattitude,
     lng: gps.longitude
   }));
+
+
 
 
   return {

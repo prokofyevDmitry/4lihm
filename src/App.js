@@ -25,7 +25,7 @@ class App extends Component {
                    component={ Camera } />
             <Route path="/racemap"
                    component={ Racemap } />
-            <SnackbarContainer/>
+            <SnackbarContainer />
           </div>
         </div>
       </HashRouter>

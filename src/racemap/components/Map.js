@@ -62,8 +62,8 @@ class Map extends Component {
    */
   static defaultProps = {
     center: {
-      lat: 0,
-      lng: 0
+      lat: 47.418083,
+      lng: 2.485351
     },
     zoom: 5,
     gpsPoints: []
@@ -84,7 +84,8 @@ class Map extends Component {
     const Markers = this.props.gpsPoints.map((gpsPoint, index) => (
       <AnyReactComponent key={ index }
                          lat={ parseFloat(gpsPoint.lat) }
-                         lng={ parseFloat(gpsPoint.lng) } />));
+                         lng={ parseFloat(gpsPoint.lng) }
+                         text={ "*" } />));
 
     // constructing polylines for each point
     const polylines = []

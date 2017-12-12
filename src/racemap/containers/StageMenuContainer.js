@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import StageDialog from '../components/StageMenu'
-import { fetchStages, openStageMenu, fetchGpsPoints, selectedStage } from '../actions/index'
+import { fetchStages, openStageMenu, fetchGpsPoints, selectedStage, closeStageMenu } from '../actions/index'
 
 const mapStateToProps = state => {
   return {
@@ -19,6 +19,10 @@ const mapDispatchToProps = dispatch => {
     },
     updateStageId: stageId => {
       dispatch(selectedStage(stageId))
+    },
+
+    handleClose: () => {
+      dispatch(closeStageMenu());
     },
 
     requestGpsPoints: () => {

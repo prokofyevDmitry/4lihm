@@ -4,9 +4,10 @@ import { connect } from 'react-redux'
 import Button from 'material-ui/Button'
 import { BtnLaunchClicked } from '../actions/index';
 
-let BtnLaunch = ({onClick, liveLogging}) => {
+let BtnLaunch = ({onClick, liveLogging, disabled}) => {
   return <Button raised
-                 onClick={ onClick }>
+                 onClick={ onClick }
+                 disabled={ disabled }>
            { (liveLogging ? "Arrêter" : "Demarrer") } un element sur la carte
          </Button>
 
@@ -14,7 +15,8 @@ let BtnLaunch = ({onClick, liveLogging}) => {
 
 const mapStateToProps = state => {
   return {
-    liveLogging: state.globalState.liveLogging
+    liveLogging: state.globalState.liveLogging,
+    disabled: state.btnLaunchReducer.disabled
   }
 }
 

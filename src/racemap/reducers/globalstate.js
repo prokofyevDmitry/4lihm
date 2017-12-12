@@ -1,3 +1,6 @@
+import { fetchStages, fetchGpsPoints, writeSrage } from '../actions/index';
+
+
 export const globalState = (state = {
     counter: 0,
     liveLogging: false,
@@ -32,7 +35,6 @@ export const mapState = (state = {
   switch (action.type) {
 
   case 'MAP_BOUNDS_CHANGES':
-    console.log(action);
     return {
       ne: action.ne,
       sw: action.sw
@@ -61,7 +63,28 @@ export const gpsState = (state = {
     return state;
   }
 }
+/**UI reducers**/
+/*
+The button is desactivated 
+*/
+export const btnLaunchReducer = (state = {
+    disabled: false
+  }, action) => {
+  switch (action.type) {
+  case 'ERROR_REQUEST_STAGES':
+    return ({
+      disabled: false
+    })
+  case 'OPEN_STAGE_DIALOG':
+    return ({
+      disabled: true
+    })
+  default:
+    return state;
 
+  }
+
+}
 
 export const stageDialogReducer = (state = {
     open: false,
@@ -94,6 +117,7 @@ export const stageMenuReducer = (state = {
       anchorEl: action.anchorEl
     });
   case 'REQUEST_GPS_POINTS':
+  case 'CLOSE_STAGE_MENU':
     return ({
       open: false,
       anchorEl: null
@@ -150,15 +174,13 @@ export const apiCallsStatus = (state = {
 }
 
 export const statgesApi = (state = {
-    stages: [],
-    error: ""
-  } , action) => {
+    stages: []
+  }, action) => {
 
   switch (action.type) {
   case 'RECEIVE_STAGES':
     return {
-      stages: action.stages,
-      error: ""
+      stages: action.stages
     }
 
   // error handling
@@ -166,8 +188,7 @@ export const statgesApi = (state = {
   case 'ERROR_REQUEST_STAGES':
     console.log(action.error);
     return {
-      stages: [],
-      error: action.error
+      stages: []
     }
   default:
     return state
@@ -176,16 +197,14 @@ export const statgesApi = (state = {
 
 export const gpsPointsApi = (state = {
     gpsPoints: [],
-    gpsPointsPures: [],
-    error: ""
+    gpsPointsPures: []
   } , action) => {
 
   switch (action.type) {
   case 'RECEIVE_GPS_POINTS':
     return {
       gpsPoints: action.gpsPoints,
-      gpsPointsPures: action.gpsPointsPures,
-      error: ""
+      gpsPointsPures: action.gpsPointsPures
     }
 
   // error handling
@@ -193,10 +212,57 @@ export const gpsPointsApi = (state = {
     console.log(action.error);
     return {
       gpsPoints: [],
-      gpsPointsPures: [],
-      error: action.error
+      gpsPointsPures: []
     }
   default:
     return state
+  }
+}
+
+
+export const apiErrors = (state = {
+    error: "",
+    lastCalledFunction: () => {
+    },
+    active: false
+  } , action) => {
+
+  switch (action.type) {
+  // calls cancelling all errors
+  case 'RECEIVE_GPS_POINTS':
+  case 'RECEIVE_STAGES':
+    return ({
+      active: false,
+      error: "",
+      lastCalledFunction: () => {
+      }
+    })
+
+  case 'ERROR_REQUEST_GPS_POINTS':
+    return ({
+      active: true,
+      error: action.error,
+      lastCalledFunction: fetchGpsPoints
+    })
+
+  case 'ERROR_CREATE_STAGE':
+    return ({
+      active: true,
+      error: action.error,
+      lastCalledFunction: writeSrage
+    })
+
+  case 'ERROR_REQUEST_STAGES':
+    return ({
+      active: true,
+      error: action.error,
+      lastCalledFunction: fetchStages
+    })
+
+
+
+  default:
+    return state;
+
   }
 }

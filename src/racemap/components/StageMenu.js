@@ -10,10 +10,14 @@ class StageMenu extends React.Component {
     this.props.fetchStages();
   }
 
-  handleRequestClose(stageId) {
+  selectStage(stageId) {
+    console.log(stageId);
     this.props.updateStageId(stageId);
     this.props.requestGpsPoints();
   }
+
+
+
 
   render() {
     return (
@@ -26,10 +30,10 @@ class StageMenu extends React.Component {
         <Menu id="simple-menu"
               anchorEl={ this.props.anchorEl }
               open={ this.props.open }
-              onRequestClose={ this.handleRequestClose }>
+              onRequestClose={ this.props.handleClose }>
           { this.props.stages.map((stage, index) => (
               <MenuItem key={ stage.id }
-                        onClick={ event => this.handleRequestClose(index) }>
+                        onClick={ event => this.selectStage(index) }>
                 { stage.depart } --
                 { stage.arrivee }
               </MenuItem>

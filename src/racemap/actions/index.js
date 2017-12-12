@@ -1,5 +1,14 @@
 import openSocket from 'socket.io-client';
 import apiPaths from '../../APIPaths'
+
+
+// action that dispatch the given function 
+export const voidDispatcher = (func) => {
+  func;
+}
+
+
+
 /**
  *  action to add gps point to map, profiler and info
  *  this action is emmited by the network logger when he recieve a message.

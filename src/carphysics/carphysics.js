@@ -14,21 +14,17 @@ class CarPhysics extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: null,
-            datas : [],
-            print_data : []
+            datas : {}
         };
     }
+
+
 
     componentDidMount(){
         this.socket = openSocket('http://localhost:8000');
         this.socket.on('info', datas => {
             this.setState((prevState)=>({
-                datas : prevState.datas.concat(datas)
-            }));
-            //
-            this.setState((prevState)=>({
-                print_data : prevState.datas.map((data)=> <li>{JSON.stringify(data)}</li> )
+                datas : datas
             }));
 
 
@@ -52,7 +48,6 @@ class CarPhysics extends React.Component {
 
         
 
-
     }
 
     componentWillUnmount(){
@@ -64,17 +59,20 @@ class CarPhysics extends React.Component {
 
 
     render() {
+
+        const date = new Date(Date.now()).toISOString()
+
         return (
             <div id="carphysicsContainer">
  
-                    <div>Time : <span id="time"></span></div>
-                    <div>Yaw Angle : <span id="angle"></span></div>
-                    <div>Pitch Angle : <span id="pitch"></span></div>
-                    <div>Roll Angle : <span id="roll"></span></div>
-                    <div>Latitude : <span id="latitude"></span></div>
-                    <div>Longitude : <span id="longitude"></span></div>
-                    <div>Speed : <span id="speed"></span></div>
-                    <div>Altitude : <span id="altitude"></span></div>
+                    <div>Time : {date}</div>
+                    <div>Pitch Angle :{this.state.datas.pitch}  </div>
+                    <div>Roll Angle :{this.state.datas.roll} </div>
+                    <div>Yaw Angle :{this.state.datas.yaw} </div>
+                    <div>Latitude : </div>
+                    <div>Longitude : </div>
+                    <div>Speed : </div>
+                    <div>Altitude : </div>
 
             </div>
 

@@ -23,7 +23,7 @@ class App extends Component {
                    component={ CarPhysics } />
             <Route path="/camera"
                    component={ Camera } />
-            <Route path="/racemap"
+              <Route path="/racemap"
                    component={ Racemap } />
             <SnackbarContainer />
           </div>

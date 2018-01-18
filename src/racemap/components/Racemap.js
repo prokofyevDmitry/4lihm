@@ -5,7 +5,7 @@ import MapContainer from '../containers/MapContainer';
 import StageDialogContainer from '../containers/StageDialogContainer';
 import StageMenuContainer from '../containers/StageMenuContainer';
 import AltitudeChartContainer from './AltitudeChartContainer';
-
+import StageStatsContainer from './StageStatsContainer'
 
 class Racemap extends React.Component {
   render() {
@@ -14,38 +14,37 @@ class Racemap extends React.Component {
 
       <Grid container
             spacing={ 24 }
-            direction={ 'row' }>
+            direction={ 'column' }>
         <StageDialogContainer/>
         <Grid item
-              direction={ 'column' }
-              xs={ 2 }>
+              container
+              direction={ 'row' }
+              xs={ 12 }>
           <Grid item
-                xs={ 12 }>
-            boutons 1
-          </Grid>
-          <Grid item
-                xs={ 12 }>
+                xs={ 6 }>
             { /* LAUNCH BUTTON */ }
             <BtnLaunch />
           </Grid>
           <Grid item
-                xs={ 12 }>
+                xs={ 6 }>
+            <StageMenuContainer/>
           </Grid>
         </Grid>
         <Grid item
-              direction={ 'column' }
-              xs={ 10 }>
-          <Grid item
-                xs={ 12 }>
-            <StageMenuContainer/>
-          </Grid>
+              container
+              direction={ 'row' }
+              xs={ 12 }>
           <Grid item
                 xs={ 12 }>
             <div style={ { height: "400px" } }>
               { /* MAP */ }
               <MapContainer/>
-              <AltitudeChartContainer/>
             </div>
+          </Grid>
+          <Grid item
+                xs={ 12 }>
+            <AltitudeChartContainer/>
+            <StageStatsContainer/>
           </Grid>
         </Grid>
       </Grid>

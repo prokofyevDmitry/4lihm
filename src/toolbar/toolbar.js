@@ -21,7 +21,6 @@ export default class ToolbarExamplesSimple extends React.Component {
                 <Grid item ><NavLink to="/carphysics" ><Button raised     color="accent" >Car Physics</Button></NavLink> </Grid>
                 <Grid item ><NavLink to="/racemap" ><Button raised     color="accent" >Race Map</Button></NavLink></Grid>
                 <Grid item ><NavLink to="/camera" ><Button raised     color="accent" >Camera</Button></NavLink></Grid>
-                <Grid item ><NavLink to="/systemstatus" ><Button raised     color="accent" >Status Système</Button></NavLink></Grid>
             </Grid>
             </Toolbar>
         </AppBar>
